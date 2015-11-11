@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html>
+  	<head>
+    	<title>AuteMonitor 网络管理系统</title>
+		<link rel="shortcut icon"  />
+    	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    	<link href="/static/css/bootstrap.min.css" rel="stylesheet" />
+    	<link rel="stylesheet" type="text/css" href="/static/css/color.css">
+	</head>
+
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<a class="navbar-brand">Autelan</a>
+				<div>
+					<ul class="nav navbar-nav">
+						<li><a href="/home?CurUser={{.CurUser}}">首页</a></li>
+						<li><a href="/deviceinfo?CurUser={{.CurUser}}">设备信息</a></li>
+						<li><a href="/search?CurUser={{.CurUser}}">搜索</a></li>
+						<li><a href="/operecord?CurUser={{.CurUser}}">操作记录</a></li>
+						<li class="active"><a href="/alarm?CurUser={{.CurUser}}">告警中心</a></li>
+					</ul>
+				</div>
+
+				<div class="pull-right">
+					<ul class="nav navbar-nav">
+						<li id="CurUser"><a href="/login">{{.CurUser}}</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="container" style="padding-top: 3% ;align=center">
+		<tr>
+			<td>
+			<div class="rich-panel ">
+				<div >
+					<table style="width:100%;" border="1">
+					<tbody>
+						<tr>&nbsp;</tr>
+						<tr>
+							<td class="col1" align="right" style="font-size: 20px">每页显示:
+								<a href="/operecord?ListCount=10&CurPage={{.CurPage}}&AlarmsCount={{.AlarmsNum}}&CurUser={{.CurUser}}" id="10" name="10" style="text-decoration:underline">10</a>
+								<a href="/operecord?ListCount=20&CurPage={{.CurPage}}&AlarmsCount={{.AlarmsNum}}&CurUser={{.CurUser}}" id="20" name="20" style="text-decoration:underline">20</a>
+								<a href="/operecord?ListCount=30&CurPage={{.CurPage}}&AlarmsCount={{.AlarmsNum}}&CurUser={{.CurUser}}" id="30" name="30" style="text-decoration:underline">30</a>
+								条
+							</td>
+						</tr>
+					</tbody>
+					</table>
+				</div>
+			</div>
+			</td>
+		</tr>
+
+		<div class="col1" align="center" style="font-size: 25px">
+			<font color="red">{{.NoInfo}}</font>
+		</idv>
+
+		<table class="table table-condensed" border="1">
+				<thead>
+					<tr>
+						<th>Mac地址</th>
+						<th>告警信息</th>
+						<th>告警时间</th>
+						<th></th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{{range .Alarms}}
+					<tr>
+						<th>{{.Mac}}</th>
+						<th>{{.Content}}</th>
+						<th>
+							<script type="text/javascript">
+								var formattime = {{.Time}};
+								var sub = formattime.substr(0,19);
+								formattime = sub.replace(/T/g," ")
+								document.write(formattime)
+							</script>
+						</th>
+						<th><a href="/alarm?op=delete&Mac={{.Mac}}&CurUser=admin" >删除</a></th>
+					</tr>
+					{{end}}
+				</tbody>
+			</table>
+		</div>
+
+		<div style="padding-left: 0%">
+			<tfoot>
+				<tr>
+					第{{.CurPage}}页，共{{.TotalPages}}页，共{{.AlarmsNum}}条
+				</tr>
+			</tfoot>
+		</div>
+
+		<div align="center">
+			<td style="font-size:20px" >
+				<a href="/operecord?op=firstpage&CurPage={{.CurPage}}&ListCount={{.ListCount}}&AlarmsCount={{.AlarmsNum}}&CurUser={{.CurUser}}">首页</a>
+				<a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a href="/operecord?op=prepage&CurPage={{.CurPage}}&ListCount={{.ListCount}}&AlarmsCount={{.AlarmsNum}}&CurUser={{.CurUser}}">上一页</a>
+				<a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a href="/operecord?op=nextpage&CurPage={{.CurPage}}&ListCount={{.ListCount}}&AlarmsCount={{.AlarmsNum}}&CurUser={{.CurUser}}">下一页</a>
+				<a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a href="/operecord?op=lastpage&CurPage={{.CurPage}}&ListCount={{.ListCount}}&AlarmsCount={{.AlarmsNum}}&CurUser={{.CurUser}}">尾页</a>
+			</td>
+		</div>
+	</body>
+
+</html>
